@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://kbrgqtbntvtesssztsig.supabase.co; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Take your vouch back · KIN</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="withdraw.js"></script>
+</head>
+<body>
+  <!-- Placeholder layout and copy: the screens and words are Tilly's design queue (execution plan L0, AR22). -->
+  <main>
+    <p class="brand">KIN</p>
+    <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+    <section id="step-ready">
+      <h1 tabindex="-1">Take your vouch back</h1>
+      <p>Your words will stop showing on your friend's card straight away. This can't be undone, but you can write a
+        new vouch if your friend sends you a new link.</p>
+      <p id="withdraw-error" class="error" role="alert" hidden></p>
+      <button type="button" id="withdraw">Take my vouch back</button>
+    </section>
+
+    <section id="step-done" hidden>
+      <h1 tabindex="-1">Your vouch is withdrawn</h1>
+      <p>It no longer shows anywhere on KIN.</p>
+    </section>
+
+    <section id="step-link" hidden>
+      <h1 tabindex="-1">This link doesn't work</h1>
+      <p>Part of it may be missing. Open the link exactly as it was shown when you sent your vouch.</p>
+    </section>
+  </main>
+</body>
+</html>

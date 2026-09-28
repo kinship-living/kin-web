@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src https://kbrgqtbntvtesssztsig.supabase.co; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Vouch for a friend · KIN</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="form.js"></script>
+</head>
+<body>
+  <!-- Placeholder layout and copy: the screens and words are Tilly's design queue (execution plan L0, AR22). -->
+  <main>
+    <p class="brand">KIN</p>
+    <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+    <section id="step-loading">
+      <h1 tabindex="-1">Opening your link…</h1>
+    </section>
+
+    <section id="step-link" hidden>
+      <h1 tabindex="-1">This link doesn't work any more</h1>
+      <p>It may have been used already, it may have expired, or part of it may be missing. Ask your friend to send
+        you a new one from the KIN app.</p>
+    </section>
+
+    <section id="step-offline" hidden>
+      <h1 tabindex="-1">We couldn't reach KIN</h1>
+      <p>Check your connection, then try again.</p>
+      <button type="button" id="retry-landing">Try again</button>
+    </section>
+
+    <section id="step-write" hidden>
+      <div class="member">
+        <span class="avatar" id="avatar" aria-hidden="true"></span>
+        <h1 tabindex="-1">Vouch for <span class="username"></span></h1>
+      </div>
+      <p><span class="username"></span> asked you to say a few words about them. If they choose to, your words show on
+        their KIN card with your first name and city. You don't need an account or the app.</p>
+      <form id="write-form" novalidate>
+        <label for="name">Your first name</label>
+        <input id="name" name="name" autocomplete="given-name" aria-describedby="name-error">
+        <p id="name-error" class="error" hidden>Add your first name, up to 40 characters.</p>
+
+        <label for="region">Your city</label>
+        <p id="region-hint" class="hint">As City, ST, for example Tacoma, WA</p>
+        <input id="region" name="region" autocomplete="address-level2" aria-describedby="region-hint region-error">
+        <p id="region-error" class="error" hidden>Add your city as City, ST.</p>
+
+        <label for="body">What should people know about <span class="username"></span>?</label>
+        <textarea id="body" name="body" rows="7" aria-describedby="body-count body-error"></textarea>
+        <p id="body-count" class="hint">0 of 600 characters</p>
+        <p id="body-error" class="error" hidden>Write between 1 and 600 characters.</p>
+
+        <button type="submit">Continue</button>
+      </form>
+    </section>
+
+    <section id="step-verify" hidden>
+      <h1 tabindex="-1">Verify your email</h1>
+      <p>We'll email you a six-digit code. KIN keeps only a scrambled form of your address, never the address itself,
+        unless you ask to join.</p>
+      <form id="email-form" novalidate>
+        <label for="email">Your email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="email-error">
+        <p id="email-error" class="error" hidden></p>
+        <button type="submit" id="send-code">Send code</button>
+      </form>
+      <form id="code-form" novalidate hidden>
+        <p id="code-sent"></p>
+        <label for="code">Code</label>
+        <input id="code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6"
+          aria-describedby="code-error">
+        <p id="code-error" class="error" hidden></p>
+        <button type="submit">Continue</button>
+        <button type="button" id="resend" class="secondary">Send a new code</button>
+        <p id="sends-left" class="hint"></p>
+      </form>
+      <button type="button" id="back-to-write" class="secondary">Back to your words</button>
+    </section>
+
+    <section id="step-preview" hidden>
+      <h1 tabindex="-1">Check your vouch</h1>
+      <p>This is how it will look on <span class="username"></span>'s card.</p>
+      <figure class="preview">
+        <blockquote id="preview-body"></blockquote>
+        <figcaption id="preview-attribution"></figcaption>
+      </figure>
+      <form id="submit-form" novalidate>
+        <div class="check">
+          <input type="checkbox" id="consent" aria-describedby="consent-error">
+          <label for="consent">I agree that KIN may show these words with my first name and city on
+            <span class="username"></span>'s card, if they choose to show it.</label>
+        </div>
+        <p id="consent-error" class="error" hidden>Please agree to continue.</p>
+        <div class="check">
+          <input type="checkbox" id="join">
+          <label for="join">I'd like to join KIN. Send an invitation to the address I verified.</label>
+        </div>
+        <p id="submit-error" class="error" role="alert" hidden></p>
+        <button type="submit" id="submit">Send my vouch</button>
+        <button type="button" id="edit" class="secondary">Change my words</button>
+      </form>
+    </section>
+
+    <section id="step-done" hidden>
+      <h1 tabindex="-1">Thank you</h1>
+      <p>Your vouch was sent to <span class="username"></span>. It shows on their card once KIN has reviewed it and
+        they choose to show it.</p>
+      <h2>Keep this link</h2>
+      <p>It takes your vouch back whenever you like. We show it only once, here.</p>
+      <p class="link"><a id="withdraw-link" href="w"></a></p>
+      <button type="button" id="copy">Copy the link</button>
+    </section>
+
+    <section id="step-unsure" hidden>
+      <h1 tabindex="-1">Your vouch may already have been sent</h1>
+      <p>The connection dropped while it was on its way, and this link now shows as used, so it most likely arrived.
+        A link sends one vouch only, so nothing was sent twice. If you want to check, ask <span class="username"></span>
+        whether it reached them.</p>
+    </section>
+  </main>
+</body>
+</html>
