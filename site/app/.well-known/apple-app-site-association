@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "S46LG28R42.living.kinship.kin",
+          "S46LG28R42.living.kinship.kin.dev"
+        ],
+        "components": [
+          {
+            "/": "/*"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "S46LG28R42.living.kinship.kin",
+      "S46LG28R42.living.kinship.kin.dev"
+    ]
+  }
+}

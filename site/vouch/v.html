@@ -11,7 +11,7 @@
   <script type="module" src="form.js"></script>
 </head>
 <body>
-  <!-- Placeholder layout and copy: the screens and words are Tilly's design queue (execution plan L0, AR22). -->
+  <!-- The words are the founder flow of 2026-10-09 (structured-preview/README.md); the layout is a placeholder until Tilly's screens (L0). -->
   <main>
     <p class="brand">KIN</p>
     <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
@@ -32,94 +32,62 @@
       <button type="button" id="retry-landing">Try again</button>
     </section>
 
-    <section id="step-write" hidden>
-      <div class="member">
-        <span class="avatar" id="avatar" aria-hidden="true"></span>
-        <h1 tabindex="-1">Vouch for <span class="username"></span></h1>
-      </div>
-      <p><span class="username"></span> asked you to say a few words about them. If they choose to, your words show on
-        their KIN card with your first name and city. You don't need an account or the app.</p>
-      <form id="write-form" novalidate>
-        <label for="name">Your first name</label>
-        <input id="name" name="name" autocomplete="given-name" aria-describedby="name-error">
-        <p id="name-error" class="error" hidden>Add your first name, up to 40 characters.</p>
-
-        <label for="region">Your city</label>
-        <p id="region-hint" class="hint">As City, ST, for example Tacoma, WA</p>
-        <input id="region" name="region" autocomplete="address-level2" aria-describedby="region-hint region-error">
-        <p id="region-error" class="error" hidden>Add your city as City, ST.</p>
-
-        <label for="body">What should people know about <span class="username"></span>?</label>
-        <textarea id="body" name="body" rows="7" aria-describedby="body-count body-error"></textarea>
-        <p id="body-count" class="hint">0 of 600 characters</p>
-        <p id="body-error" class="error" hidden>Write between 1 and 600 characters.</p>
-
-        <button type="submit">Continue</button>
+    <section id="step-choose" hidden>
+      <h1 tabindex="-1">Why are you friends?</h1>
+      <p>Pick up to five. You know them better than we do.</p>
+      <p class="hint">Your friend will choose which phrases appear on their Kindred Card. No app or KIN account needed.</p>
+      <form id="choose-form" novalidate>
+        <fieldset aria-describedby="selection-note choose-error">
+          <legend class="visually-hidden">Reasons you are friends</legend>
+          <p id="count" class="count"></p>
+          <div id="options" class="options"></div>
+        </fieldset>
+        <p id="selection-note" class="hint"></p>
+        <p id="choose-error" class="error" hidden></p>
+        <button type="submit">THAT’S MY FRIEND</button>
       </form>
     </section>
 
-    <section id="step-verify" hidden>
-      <h1 tabindex="-1">Verify your email</h1>
-      <p>We'll email you a six-digit code. KIN keeps only a scrambled form of your address, never the address itself,
-        unless you ask to join.</p>
-      <form id="email-form" novalidate>
-        <label for="email">Your email address</label>
-        <input id="email" name="email" type="email" autocomplete="email" inputmode="email" aria-describedby="email-error">
-        <p id="email-error" class="error" hidden></p>
-        <button type="submit" id="send-code">Send code</button>
-      </form>
-      <form id="code-form" novalidate hidden>
-        <p id="code-sent"></p>
-        <label for="code">Code</label>
-        <input id="code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6"
-          aria-describedby="code-error">
-        <p id="code-error" class="error" hidden></p>
-        <button type="submit">Continue</button>
-        <button type="button" id="resend" class="secondary">Send a new code</button>
-        <p id="sends-left" class="hint"></p>
-      </form>
-      <button type="button" id="back-to-write" class="secondary">Back to your words</button>
-    </section>
-
-    <section id="step-preview" hidden>
-      <h1 tabindex="-1">Check your vouch</h1>
-      <p>This is how it will look on <span class="username"></span>'s card.</p>
-      <figure class="preview">
-        <blockquote id="preview-body"></blockquote>
-        <figcaption id="preview-attribution"></figcaption>
-      </figure>
+    <section id="step-details" hidden>
+      <h1 tabindex="-1">That sounds like your friend.</h1>
+      <p>Here’s what your choices become. Your friend can choose any of these for their card.</p>
+      <ul id="phrases" class="phrases"></ul>
       <form id="submit-form" novalidate>
+        <label for="name">What should we call you?</label>
+        <p id="name-hint" class="hint">A nickname or made-up name is welcome. Your real name is your business.</p>
+        <input id="name" name="name" autocomplete="nickname" aria-describedby="name-hint name-error">
+        <p id="name-error" class="error" hidden></p>
+
+        <label for="city">Your city</label>
+        <input id="city" name="city" autocomplete="address-level2" aria-describedby="city-error">
+        <p id="city-error" class="error" hidden></p>
+
+        <label for="state">State (two letters)</label>
+        <input id="state" name="state" class="state" autocomplete="address-level1" maxlength="2" placeholder="WA"
+          aria-describedby="state-error">
+        <p id="state-error" class="error" hidden></p>
+
         <div class="check">
           <input type="checkbox" id="consent" aria-describedby="consent-error">
-          <label for="consent">I agree that KIN may show these words with my first name and city on
-            <span class="username"></span>'s card, if they choose to show it.</label>
+          <label for="consent">I’m happy for my friend to share these phrases on their card with my chosen name, city
+            and state.</label>
         </div>
-        <p id="consent-error" class="error" hidden>Please agree to continue.</p>
-        <div class="check">
-          <input type="checkbox" id="join">
-          <label for="join">I'd like to join KIN. Send an invitation to the address I verified.</label>
-        </div>
+        <p id="consent-error" class="error" hidden></p>
         <p id="submit-error" class="error" role="alert" hidden></p>
-        <button type="submit" id="submit">Send my vouch</button>
-        <button type="button" id="edit" class="secondary">Change my words</button>
+        <button type="submit" id="submit">SEND TO MY FRIEND</button>
+        <button type="button" id="back" class="secondary">Back to my choices</button>
       </form>
     </section>
 
     <section id="step-done" hidden>
-      <h1 tabindex="-1">Thank you</h1>
-      <p>Your vouch was sent to <span class="username"></span>. It shows on their card once KIN has reviewed it and
-        they choose to show it.</p>
-      <h2>Keep this link</h2>
-      <p>It takes your vouch back whenever you like. We show it only once, here.</p>
+      <h1 tabindex="-1">You did your friend a solid.</h1>
+      <p>KIN is an app for finding friends. People to do things with, do nothing with, and have in your corner.</p>
+      <p>Your friend clearly has excellent taste in humans. If you’re curious, there’s room for you too.</p>
+      <p><a class="action" href="https://kinship.living/">TAKE A LOOK AT KIN</a></p>
+      <h2>Changed your mind?</h2>
+      <p>This link takes your phrases back whenever you like. We show it only once, here.</p>
       <p class="link"><a id="withdraw-link" href="w"></a></p>
-      <button type="button" id="copy">Copy the link</button>
-    </section>
-
-    <section id="step-unsure" hidden>
-      <h1 tabindex="-1">Your vouch may already have been sent</h1>
-      <p>The connection dropped while it was on its way, and this link now shows as used, so it most likely arrived.
-        A link sends one vouch only, so nothing was sent twice. If you want to check, ask <span class="username"></span>
-        whether it reached them.</p>
+      <button type="button" id="copy" class="secondary">Copy the link</button>
     </section>
   </main>
 </body>
