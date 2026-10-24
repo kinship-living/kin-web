@@ -89,24 +89,6 @@ button:disabled { opacity: 0.6; cursor: default; }
 
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
-.member { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
-.member h1 { margin: 0; }
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  flex: none;
-  border-radius: 50%;
-  background: var(--panel);
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.preview { margin: 1rem 0; padding: 1rem 1.25rem; border-radius: 0.75rem; background: var(--panel); }
-.preview blockquote { margin: 0; white-space: pre-wrap; }
-.preview figcaption { margin-top: 0.75rem; color: var(--muted); }
-
 .link { overflow-wrap: anywhere; }
 
 .visually-hidden {
@@ -117,3 +99,17 @@ button:disabled { opacity: 0.6; cursor: default; }
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* The vouch form's reasons: one row each, the whole row a 44-point target. */
+fieldset { border: 0; margin: 0; padding: 0; }
+.count { font-weight: 600; margin: 1rem 0 0.5rem; }
+.options { display: grid; gap: 0.5rem; }
+.option { display: flex; gap: 0.75rem; align-items: center; min-height: 2.75rem; padding: 0.25rem 0.75rem;
+  border: 1px solid var(--line); border-radius: 0.5rem; }
+.option input { width: 1.5rem; height: 1.5rem; min-height: 0; margin: 0; flex: none; }
+.option label { flex: 1; font-weight: 400; margin: 0; padding: 0.5rem 0; }
+.option input:disabled + label { color: var(--muted); }
+.phrases { margin: 1rem 0; padding: 1rem 1.25rem 1rem 2.25rem; border-radius: 0.75rem; background: var(--panel); }
+input.state { max-width: 5rem; text-transform: uppercase; }
+a.action { display: inline-block; min-height: 2.75rem; padding: 0.625rem 1.25rem; border-radius: 0.5rem;
+  background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; }
