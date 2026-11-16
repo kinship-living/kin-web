@@ -1,29 +1,18 @@
-/* Placeholder styling for both static sites until Tilly's design tokens (execution plan L0). It holds to
-   WCAG 2.2 AA: text contrast at least 4.5:1 in both schemes, 44-point targets, a visible focus ring, text
-   that reflows at 400% zoom, and no motion. */
+/* Huxley public pages. Fonts and logo are local, including on token-bearing pages. */
+@font-face { font-family: Inter; src: url('brand/Inter_400Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: Inter; src: url('brand/Inter_600SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face { font-family: Canela; src: url('brand/Canela-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('brand/PlayfairDisplay-BlackItalic.woff2') format('woff2'); font-weight: 900; font-style: italic; font-display: swap; }
 :root {
-  --ink: #1d1d1f;
-  --muted: #4a4a4f;
-  --paper: #ffffff;
-  --line: #8a8a90;
-  --accent: #1f4d3a;
-  --accent-ink: #ffffff;
-  --error: #a4161a;
-  --panel: #f3f3f1;
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ink: #f2f2f0;
-    --muted: #c4c4c8;
-    --paper: #141416;
-    --line: #8e8e94;
-    --accent: #9fd3b8;
-    --accent-ink: #0d1f17;
-    --error: #ff9b9b;
-    --panel: #232326;
-  }
+ --ink: #173c3b;
+ --muted: #456563;
+ --paper: #faf8f4;
+ --line: #6b807c;
+ --accent: #123f3d;
+ --accent-ink: #faf8f4;
+ --error: #9b3a31;
+ --panel: #eef0e9;
+ color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -32,18 +21,18 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 1.0625rem/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+  font: 1.0625rem/1.5 Inter, sans-serif;
 }
 
 main {
   max-width: 36rem;
   margin: 0 auto;
-  padding: 1.5rem 1rem 3rem;
+  padding: 2.5rem 1.5rem 3rem;
 }
 
 .brand { font-weight: 700; letter-spacing: 0.2em; margin: 0 0 2rem; }
-h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 1rem; }
-h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
+h1 { font-family: Canela, serif; font-weight: 500; font-size: 2.25rem; line-height: 1.2; margin: 0 0 1rem; }
+h2 { font-family: Canela, serif; font-weight: 500; font-size: 1.25rem; margin: 2rem 0 0.5rem; }
 h1:focus { outline: none; }
 a { color: var(--accent); }
 
@@ -113,3 +102,7 @@ fieldset { border: 0; margin: 0; padding: 0; }
 input.state { max-width: 5rem; text-transform: uppercase; }
 a.action { display: inline-block; min-height: 2.75rem; padding: 0.625rem 1.25rem; border-radius: 0.5rem;
   background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; }
+
+.brand img { display: block; max-width: 100%; height: auto; }
+footer { margin-top: 3rem; font-size: .8125rem; line-height: 1.8; }
+button, a.action { text-transform: uppercase; letter-spacing: .04em; }

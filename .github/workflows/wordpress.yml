@@ -1,0 +1,73 @@
+# Written by kin-baas web/publish.sh; do not edit here. Uploads wordpress/friend-vouch/, the vouch form built for
+# kin-prod, into the friend-vouch/ folder of thehuxley.app's WordPress host over SFTP whenever it changes, then checks
+# that https://thehuxley.app/friend-vouch/ serves this upload with its .htaccess applied.
+#
+# Needs, in this repository's settings: the secrets WORDPRESS_SFTP_HOST (host, or host:port), WORDPRESS_SFTP_USER,
+# WORDPRESS_SFTP_PASSWORD and WORDPRESS_SFTP_KNOWN_HOSTS (`ssh-keyscan <host>`), and the variable WORDPRESS_SFTP_ROOT,
+# the WordPress folder (the one holding wp-content) as the SFTP login sees it.
+name: wordpress
+
+on:
+  push:
+    branches: [main]
+    paths: ['wordpress/**', '.github/workflows/wordpress.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: wordpress
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SFTP_HOST: ${{ secrets.WORDPRESS_SFTP_HOST }}
+      SFTP_USER: ${{ secrets.WORDPRESS_SFTP_USER }}
+      LFTP_PASSWORD: ${{ secrets.WORDPRESS_SFTP_PASSWORD }}
+      SFTP_KNOWN_HOSTS: ${{ secrets.WORDPRESS_SFTP_KNOWN_HOSTS }}
+      SFTP_ROOT: ${{ vars.WORDPRESS_SFTP_ROOT }}
+      SITE: https://thehuxley.app/friend-vouch/
+    steps:
+      - name: Check the settings
+        run: |
+          for name in SFTP_HOST SFTP_USER LFTP_PASSWORD SFTP_KNOWN_HOSTS SFTP_ROOT; do
+            [ -n "${!name}" ] || { echo "::error::$name is not set (see the top of .github/workflows/wordpress.yml)"; exit 1; }
+          done
+      - uses: actions/checkout@v7
+      - name: Install lftp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+      # Into friend-vouch/ only, and nothing deleted: a page the CDN still holds keeps finding the files it names.
+      # The guard on wp-content stops an upload into anything but the WordPress folder.
+      - name: Upload
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SFTP_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          lftp <<EOF
+          set cmd:fail-exit yes
+          set net:max-retries 2
+          set sftp:connect-program "ssh -a -x -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+          open --env-password -u "$SFTP_USER" "sftp://$SFTP_HOST"
+          cls -d "$SFTP_ROOT/wp-content"
+          mirror --reverse --no-perms --verbose wordpress/friend-vouch "$SFTP_ROOT/friend-vouch"
+          EOF
+      - name: Check what thehuxley.app serves
+        run: |
+          fail() { echo "::error::$1"; exit 1; }
+          curl -sS -D headers.txt -o served.html "$SITE" || fail "$SITE did not answer"
+          grep -q '^HTTP/[0-9.]* 200' headers.txt || fail "$SITE answered $(head -1 headers.txt)"
+          if ! cmp -s served.html wordpress/friend-vouch/index.html; then
+            diff served.html wordpress/friend-vouch/index.html | head -40 || true
+            fail "$SITE serves something other than this upload (the diff is above). The previous build means the host's cache needs flushing (GoDaddy: Managed WordPress, Settings, Flush Cache) before this workflow runs again; anything else means the host changed the page on its way out."
+          fi
+          grep -qi "^content-security-policy: .*frame-ancestors 'none'" headers.txt \
+            || fail "$SITE sends no Content-Security-Policy header: the host did not apply friend-vouch/.htaccess"
+          grep -qi '^cache-control: no-store' headers.txt \
+            || echo "::warning::$SITE is served without Cache-Control: no-store; the host's cache may keep an old page after a deploy"
+          status="$(curl -sS -o missing.html -w '%{http_code}' "${SITE}no-such-page")"
+          [ "$status" = 404 ] && grep -q 'Page not found · HUXLEY' missing.html \
+            || fail "${SITE}no-such-page is answered by WordPress ($status), not friend-vouch/404.html: RewriteEngine Off did not apply"
+          echo "$SITE serves wordpress/friend-vouch/ from $(git rev-parse --short HEAD)"

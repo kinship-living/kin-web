@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src https://faajjqhxuyytbawwzqyi.supabase.co; manifest-src 'self'; base-uri 'none'; form-action 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Vouch for a friend · HUXLEY</title>
+  <link rel="stylesheet" href="style.9dd6e573.css">
+  <script type="module" src="form.E3ABEDTU.js"></script>
+</head>
+<body>
+  <!-- The words are the founder flow of 2026-10-09 (structured-preview/README.md); the layout is a placeholder until Tilly's screens (L0). -->
+  <main>
+    <p class="brand"><img src="brand/huxley-wordmark.svg" alt="HUXLEY" width="120" height="52"></p>
+    <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+    <section id="step-loading">
+      <h1 tabindex="-1">Opening your link…</h1>
+    </section>
+
+    <!-- The address without a link's token: https://thehuxley.app/friend-vouch/ on its own. -->
+    <section id="step-about" hidden>
+      <h1 tabindex="-1">Vouch for a friend</h1>
+      <p>This is where friends write a few words for someone joining HUXLEY. To write one, open the link your friend
+        sent you.</p>
+      <p>Questions: <a href="mailto:hello@thehuxley.app">hello@thehuxley.app</a></p>
+    </section>
+
+    <section id="step-link" hidden>
+      <h1 tabindex="-1">This link doesn't work any more</h1>
+      <p>It may have been used already, it may have expired, or part of it may be missing. Ask your friend to send
+        you a new one from the HUXLEY app.</p>
+    </section>
+
+    <section id="step-offline" hidden>
+      <h1 tabindex="-1">We couldn't reach HUXLEY</h1>
+      <p>Check your connection, then try again.</p>
+      <button type="button" id="retry-landing">Try again</button>
+    </section>
+
+    <section id="step-choose" hidden>
+      <h1 tabindex="-1">Why are you friends?</h1>
+      <p>Pick up to five. You know them better than we do.</p>
+      <p class="hint">Your friend will choose which phrases appear on their HUXLEY Card. No app or HUXLEY account needed.</p>
+      <form id="choose-form" novalidate>
+        <fieldset aria-describedby="selection-note choose-error">
+          <legend class="visually-hidden">Reasons you are friends</legend>
+          <p id="count" class="count"></p>
+          <div id="options" class="options"></div>
+        </fieldset>
+        <p id="selection-note" class="hint"></p>
+        <p id="choose-error" class="error" hidden></p>
+        <button type="submit">THAT’S MY FRIEND</button>
+      </form>
+    </section>
+
+    <section id="step-details" hidden>
+      <h1 tabindex="-1">That sounds like your friend.</h1>
+      <p>Here’s what your choices become. Your friend can choose any of these for their card.</p>
+      <ul id="phrases" class="phrases"></ul>
+      <form id="submit-form" novalidate>
+        <label for="name">What should we call you?</label>
+        <p id="name-hint" class="hint">A nickname or made-up name is welcome. Your real name is your business.</p>
+        <input id="name" name="name" autocomplete="nickname" aria-describedby="name-hint name-error">
+        <p id="name-error" class="error" hidden></p>
+
+        <label for="city">Your city</label>
+        <input id="city" name="city" autocomplete="address-level2" aria-describedby="city-error">
+        <p id="city-error" class="error" hidden></p>
+
+        <label for="state">State (two letters)</label>
+        <input id="state" name="state" class="state" autocomplete="address-level1" maxlength="2" placeholder="WA"
+          aria-describedby="state-error">
+        <p id="state-error" class="error" hidden></p>
+
+        <div class="check">
+          <input type="checkbox" id="consent" aria-describedby="consent-error">
+          <label for="consent">I’m happy for my friend to share these phrases on their card with my chosen name, city
+            and state.</label>
+        </div>
+        <p id="consent-error" class="error" hidden></p>
+        <p id="submit-error" class="error" role="alert" hidden></p>
+        <button type="submit" id="submit">SEND TO MY FRIEND</button>
+        <button type="button" id="back" class="secondary">Back to my choices</button>
+      </form>
+    </section>
+
+    <section id="step-done" hidden>
+      <h1 tabindex="-1">You did your friend a solid.</h1>
+      <p>HUXLEY is an app for finding friends. People to do things with, do nothing with, and have in your corner.</p>
+      <p>Your friend clearly has excellent taste in humans. If you’re curious, there’s room for you too.</p>
+      <p><a class="action" href="https://thehuxley.app/">TAKE A LOOK AT HUXLEY</a></p>
+      <h2>Changed your mind?</h2>
+      <p>This link takes your phrases back whenever you like. We show it only once, here.</p>
+      <p class="link"><a id="withdraw-link" href="withdraw/"></a></p>
+      <button type="button" id="copy" class="secondary">Copy the link</button>
+    </section>
+    <!-- A new tab: the WordPress pages run analytics, and in this tab they could read its sessionStorage. -->
+    <footer><a href="https://thehuxley.app/terms/" target="_blank" rel="noopener">Terms<span class="visually-hidden"> (opens in a new tab)</span></a> · <a href="https://thehuxley.app/privacy-policy/" target="_blank" rel="noopener">Privacy<span class="visually-hidden"> (opens in a new tab)</span></a> · <a href="https://thehuxley.app/community-standards/" target="_blank" rel="noopener">Community Standards<span class="visually-hidden"> (opens in a new tab)</span></a></footer>
+  </main>
+</body>
+</html>
